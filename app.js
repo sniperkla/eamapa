@@ -119,16 +119,15 @@ bot.start(async (ctx) => {
     }
   )
 
-  await ctx.reply('Quick links:', quickLinksKb)
+  await ctx.reply(quickLinksKb)
 })
 
 // ===== Reply keyboard handlers =====
 bot.hears('📝 Open Account', (ctx) =>
   ctx.reply(
-    'Open the register page:',
+    'Register',
     Markup.inlineKeyboard([
-      [Markup.button.url('📝 Open Account', LINKS.register)],
-      [Markup.button.url('🌍 Website', LINKS.website)]
+      [Markup.button.url('📝 Open Account', LINKS.register)]
     ])
   )
 )
@@ -141,7 +140,7 @@ bot.hears('📥 Download', (ctx) =>
       )
     },
     {
-      caption: '📥 *Choose available version below*',
+      caption: '📥 * Choose available version below *',
       parse_mode: 'Markdown',
       ...downloadKb
     }
@@ -150,11 +149,8 @@ bot.hears('📥 Download', (ctx) =>
 
 bot.hears('💬 Contact', (ctx) =>
   ctx.reply(
-    'Contact us here:',
-    Markup.inlineKeyboard([
-      [Markup.button.url('💬 Contact', LINKS.contact)],
-      [Markup.button.url('🌍 Website', LINKS.website)]
-    ])
+    'Contact us here',
+    Markup.inlineKeyboard([[Markup.button.url('💬 Contact', LINKS.contact)]])
   )
 )
 
@@ -176,7 +172,7 @@ async function sendHowToUse(ctx) {
     },
     {
       caption:
-        '📌 *Instruction Guide*\nPlease also refer to the step-by-step instructions in the image above 👆',
+        '📌 *Instruction Guide*\nPlease also refer to the step-by-step instructions to setting MT5 CENT SWAP-FREE (STANDARD STP) in the image above 👆',
       parse_mode: 'Markdown'
     }
   )
@@ -192,17 +188,16 @@ async function sendHowToUse(ctx) {
    - Complete KYC to activate your MT5 CENT SWAP-FREE (STANDARD STP) account.  
 
 3️⃣ 📩 *Account Submission*  
-   ⚠️ *Important:* Once your account is approved, you * MUST * provide your MT5 account number to our support team.  
+   ⚠️ *Important* Once your account is approved, you * MUST * provide your MT5 account number to our support team.  
    - Tap * 💬 Contact * in the menu  
-   - Or chat directly with our support agent  
 
-4️⃣ 💻 * Download EA MAPA * and connect it with MT5  
+4️⃣ 💻 *Download EA MAPA* and connect it with MT5  
 
-5️⃣ ☁️ Use a * VPS * for 24/7 automated trading (recommended)  
+5️⃣ ☁️ Use a *VPS* for 24/7 automated trading (recommended)  
 
 6️⃣ 📊 Monitor your trades regularly  
 
-⚠️ *Risk Notice:* Investment involves risks. Please study all information carefully before making decisions.`,
+ *Risk Notice* Investment involves risks. Please study all information carefully before making decisions.`,
     { parse_mode: 'Markdown' }
   )
 }
