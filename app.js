@@ -19,6 +19,43 @@ const path = require('path')
 if (!BOT_TOKEN) throw new Error('BOT_TOKEN missing!')
 const bot = new Telegraf(BOT_TOKEN)
 
+const KNOWN_TEXTS = new Set([
+  '📝 Open Account',
+  '📥 Download',
+  '💬 Contact',
+  '📖 How to Use'
+])
+
+// Catch any plain text not matched by the buttons/commands
+bot.on('text', async (ctx, next) => {
+  const text = (ctx.message?.text || '').trim()
+  // Let commands (/start, /help, etc.) and known buttons pass through
+  if (text.startsWith('/')) return next()
+  if (KNOWN_TEXTS.has(text)) return next()
+
+  await ctx.reply(
+    `🤖 This is an automated support bot.\n` +
+      `If you want to chat with a real person, tap the button below ⬇️`,
+    Markup.inlineKeyboard([
+      [Markup.button.url('💬 Chat with a Human', LINKS.contact)]
+    ])
+  )
+})
+
+// Catch non-text messages too (stickers, photos, voice, etc.)
+bot.on('message', async (ctx, next) => {
+  // If the previous text handler already responded, skip; otherwise offer contact
+  if (ctx.message?.text) return next()
+
+  await ctx.reply(
+    `🤖 I can’t process this type of message.\n` +
+      `Tap below to chat with a real person:`,
+    Markup.inlineKeyboard([
+      [Markup.button.url('💬 Chat with a Human', LINKS.contact)]
+    ])
+  )
+})
+
 const LINKS = {
   register: 'https://eamapa.com/register',
   website: 'https://eamapa.com',
@@ -130,20 +167,42 @@ bot.action('HOW_TO_USE', async (ctx) => {
 })
 
 async function sendHowToUse(ctx) {
+  // Step 1: Send the image with a short caption
+  await ctx.replyWithPhoto(
+    {
+      source: fs.createReadStream(
+        path.join(__dirname, 'public/images/howto.png') // <- put your guide image here
+      )
+    },
+    {
+      caption:
+        '📌 *Instruction Guide*\nPlease also refer to the step-by-step instructions in the image above 👆',
+      parse_mode: 'Markdown'
+    }
+  )
+
+  // Step 2: Send the detailed instructions
   return ctx.reply(
-    `📖 *How to Use*
+    `📖 *How to Use EA MAPA*
 
-1️ 💳 Open a trading account  
+1️⃣ 💳 *Open a trading account*  
+   - Register with our broker partner (Vantage) with a referral code.  
 
-2️ ⏳ Wait for account verification  
+2️⃣ ✅ *Verify your identity*  
+   - Complete KYC to activate your MT5 CENT SWAP-FREE (STANDARD STP) account.  
 
-3️ 💻 Download EA MAPA bot and connect with * MT5 *  
+3️⃣ 📩 *Account Submission*  
+   ⚠️ *Important:* Once your account is approved, you * MUST * provide your MT5 account number to our support team.  
+   - Tap * 💬 Contact * in the menu  
+   - Or chat directly with our support agent  
 
-4️ ☁️ Use a * VPS * for 24/7 trading (recommended)  
+4️⃣ 💻 * Download EA MAPA * and connect it with MT5  
 
-5️ 📊 Monitor your trades regularly  
+5️⃣ ☁️ Use a * VPS * for 24/7 automated trading (recommended)  
 
-⚠️ Investment involves risks. Investors should study the information carefully before making any decision`,
+6️⃣ 📊 Monitor your trades regularly  
+
+⚠️ *Risk Notice:* Investment involves risks. Please study all information carefully before making decisions.`,
     { parse_mode: 'Markdown' }
   )
 }
