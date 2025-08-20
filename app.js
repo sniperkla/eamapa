@@ -172,7 +172,7 @@ async function sendHowToUse(ctx) {
     },
     {
       caption:
-        '📌 *Instruction Guide*\nPlease also refer to the step-by-step instructions to setting MT5 CENT SWAP-FREE (STANDARD STP) in the image above 👆',
+        '📌 *Instruction Guide*\nPlease also refer to the step-by-step instructions to active MT5 CENT SWAP-FREE (STANDARD STP) in the image above 👆',
       parse_mode: 'Markdown'
     }
   )
